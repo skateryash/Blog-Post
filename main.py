@@ -10,12 +10,15 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
 from flask_gravatar import Gravatar
 from functools import wraps
+from dotenv import load_dotenv
+import os
 
+load_dotenv()  # take environment variables from .env.
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
-MY_EMAIL = "mrfrek78@gmail.com"
-TO_EMAIL = "ygcjal@gmail.com"
-MY_PASSWORD = "klspryxyxahzfsna"
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+MY_EMAIL = os.getenv('MY_EMAIL')
+TO_EMAIL = os.getenv('TO_EMAIL')
+MY_PASSWORD = os.getenv('MY_PASSWORD')
 ckeditor = CKEditor(app)
 Bootstrap(app)
 gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=False, force_lower=False,
@@ -23,6 +26,8 @@ gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=Fa
 
 # CONNECT TO DB
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+# postgres://blog_aeje_user:quDzOIG4rpxPfuIEXhBrzrIhxyx33AIU@dpg-ch4uugcs3fvqdik75h90-a.singapore-postgres.render.com/blog_aeje
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager()
